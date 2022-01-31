@@ -85,13 +85,8 @@ void hook_trigger_changelevel(CBaseEntity@ changelevel) {
 	string hook_ent_name = "MapChangeMsgHook" + g_id++;
 	string new_changelevel_name = "MapChangeMsgTrigger" + g_id++;
 	
-	if (isTriggered) {
-		dictionary keys;
-		keys["targetname"] = original_changelevel_name;
-		keys["target"] = hook_ent_name;
-		
-		g_EntityFuncs.CreateEntity("trigger_relay", keys);
-	} else {
+	// use trigger_multiple to handle level change touches
+	{
 		dictionary keys;
 		keys["targetname"] = original_changelevel_name;
 		keys["target"] = hook_ent_name;
@@ -105,6 +100,16 @@ void hook_trigger_changelevel(CBaseEntity@ changelevel) {
 		changelevel.pev.solid = SOLID_NOT;
 		changelevel.pev.spawnflags = 2;
 		changelevel.Respawn();
+	}
+	
+	// create a relay always, for when a changelevel is both touchable and triggerable
+	// (trigger_multiple can't be triggered by name)
+	{
+		dictionary keys;
+		keys["targetname"] = original_changelevel_name;
+		keys["target"] = hook_ent_name;
+		
+		g_EntityFuncs.CreateEntity("trigger_relay", keys);
 	}
 	
 	dictionary keys;
