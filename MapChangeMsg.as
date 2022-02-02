@@ -85,8 +85,8 @@ void hook_trigger_changelevel(CBaseEntity@ changelevel) {
 	string hook_ent_name = "MapChangeMsgHook" + g_id++;
 	string new_changelevel_name = "MapChangeMsgTrigger" + g_id++;
 	
-	// use trigger_multiple to handle level change touches
-	{
+	// use trigger_multiple to handle level change touches, only if USE only flag is disabled
+	if (!isTriggered) {
 		dictionary keys;
 		keys["targetname"] = original_changelevel_name;
 		keys["target"] = hook_ent_name;
