@@ -41,8 +41,4 @@ else()
 	set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 	set(CMAKE_CXX_FLAGS_RELEASE "-Os -fno-exceptions -w -Wfatal-errors")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC -Dlinux)
-	
-	add_custom_command(TARGET ${PROJECT_NAME}  POST_BUILD
-		COMMAND ${CMAKE_CURRENT_LIST_DIR}/replace_dll.sh
-	)
 endif()
