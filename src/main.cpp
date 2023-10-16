@@ -1,4 +1,4 @@
-#include "meta_init.h"
+#include "mmlib.h"
 #include <string>
 
 using namespace std;
@@ -22,32 +22,6 @@ string g_load_map;
 string g_load_map_arg; // not sure what this does but using it just in case
 
 cvar_t* g_change_delay;
-
-#define MAX_CVARS 8
-cvar_t g_cvar_data[MAX_CVARS];
-int g_cvar_count = 0;
-
-#define println(fmt,...) {ALERT(at_console, (char*)(string(fmt) + "\n").c_str(), ##__VA_ARGS__); }
-
-cvar_t* RegisterCVar(char* name, char* strDefaultValue, int intDefaultValue, int flags) {
-
-	if (g_cvar_count >= MAX_CVARS) {
-		println("Failed to add cvar '%s'. Increase MAX_CVARS and recompile.", name);
-		return NULL;
-	}
-
-	g_cvar_data[g_cvar_count].name = name;
-	g_cvar_data[g_cvar_count].string = strDefaultValue;
-	g_cvar_data[g_cvar_count].flags = flags | FCVAR_EXTDLL;
-	g_cvar_data[g_cvar_count].value = intDefaultValue;
-	g_cvar_data[g_cvar_count].next = NULL;
-
-	CVAR_REGISTER(&g_cvar_data[g_cvar_count]);
-
-	g_cvar_count++;
-
-	return CVAR_GET_POINTER(name);
-}
 
 void ChangeLevel(char* s1, char* s2) {
 	if (g_change_delay->value < 0) {
